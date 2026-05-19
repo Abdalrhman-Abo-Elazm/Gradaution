@@ -1,0 +1,6 @@
+node_modules/
+*.log
+.env
+academyai.db
+uploads/
+.DS_Store
