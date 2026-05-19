@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academy - منصة المواد الدراسية (Combined)</title>
+    <style>
+    /* Inlined styles from style.css */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f5f5f5;
+        color: #333;
+        line-height: 1.6;
+    }
+
+    .navbar {
+        background-color: #1a2a4a;
+        padding: 1rem 2rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .nav-logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .logo-icon {
+        font-size: 1.8rem;
+    }
+
+    .nav-menu {
+        list-style: none;
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .nav-link {
+        color: #b0c4de;
+        text-decoration: none;
+        transition: color 0.3s;
+        font-size: 0.95rem;
+        cursor: pointer;
+    }
+
+    .nav-link:hover {
+        color: #ffffff;
+    }
+
+    .page { display: none; min-height: calc(100vh - 70px); }
+    .page.active { display: block; }
+
+    .page-header { background: linear-gradient(135deg, #1a2a4a 0%, #2d4563 100%); color: white; padding: 3rem 2rem; text-align: right; }
+    .page-header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .page-header p { font-size: 1.1rem; opacity: 0.9; }
+
+    .hero { position: relative; min-height: 600px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: linear-gradient(135deg, #1a2a4a 0%, #2d4563 50%, #1a3a5a 100%); }
+    .hero-background { position: absolute; width: 100%; height: 100%; background-image: radial-gradient(circle at 20% 50%, rgba(100, 150, 200, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(100, 150, 200, 0.1) 0%, transparent 50%); pointer-events: none; }
+    .hero-content { position: relative; z-index: 10; text-align: center; color: white; max-width: 800px; padding: 0 2rem; }
+    .hero-label { display: inline-block; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 30px; padding: 0.5rem 1.5rem; font-size: 0.9rem; margin-bottom: 1.5rem; }
+    .hero-title { font-size: 3.5rem; font-weight: 700; margin-bottom: 1rem; line-height: 1.2; }
+    .hero-description { font-size: 1.2rem; opacity: 0.95; margin-bottom: 2rem; line-height: 1.8; }
+
+    .features { padding: 4rem 2rem; max-width: 1200px; margin: 0 auto; }
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+    .feature-card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); text-align: center; transition: transform 0.3s, box-shadow 0.3s; }
+
+    .btn-primary { background: linear-gradient(135deg, #4a90e2 0%, #2d5fa3 100%); color: white; border: none; padding: 0.8rem 2rem; border-radius: 6px; font-size: 1rem; cursor: pointer; transition: all 0.3s; font-weight: 600; }
+    .btn-secondary { background: #f0f0f0; color: #1a2a4a; border: 2px solid #4a90e2; padding: 0.7rem 1.8rem; border-radius: 6px; font-size: 0.95rem; cursor: pointer; transition: all 0.3s; font-weight: 600; }
+
+    .materials-container { max-width: 1200px; margin: 0 auto; padding: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+    .upload-section, .library-section { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+    .upload-box { border: 2px dashed #4a90e2; border-radius: 8px; padding: 3rem 2rem; text-align: center; background: rgba(74,144,226,0.05); cursor: pointer; transition: all 0.3s; }
+
+    .files-list { display:flex; flex-direction: column; gap: 1rem; }
+    .file-item { display:flex; align-items:center; padding:1rem; background:#f9f9f9; border-radius:8px; cursor:pointer; }
+    .file-icon { font-size:1.5rem; margin-right:1rem; }
+
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">🎓</span>
+                <span>Academy</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="#dashboard" class="nav-link" onclick="showPage('dashboard')">لوحة التحكم</a></li>
+                <li class="nav-item"><a href="#materials" class="nav-link" onclick="showPage('materials')">المواد الدراسية</a></li>
+                <li class="nav-item"><a href="#chat" class="nav-link" onclick="showPage('chat')">اختبار الـ API</a></li>
+                <li class="nav-item user-info" id="userInfo" style="display: none;">
+                    <span id="userName"></span>
+                    <button class="btn-secondary" onclick="logout()" style="margin-left: 10px; padding: 5px 10px;">تسجيل خروج</button>
+                </li>
+                <li class="nav-item"><a href="#login" class="nav-link" onclick="showPage('login')" id="loginLink">تسجيل الدخول</a></li>
+                <li class="nav-item"><a href="#signup" class="nav-link" onclick="showPage('signup')" id="signupLink">إنشاء حساب</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Pages (same structure as INDEX.html) -->
+    <div id="dashboard" class="page active">
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-label">منصتك الشخصية للتعليم الذكي</div>
+                <h1 class="hero-title">تعلم أذكى، وليس أصعب</h1>
+                <p class="hero-description">حمّل موادك الدراسية وادعّم مكتبتك الشخصية بالملفات والملاحظات بسهولة.</p>
+                <button class="btn-primary" onclick="showPage('materials')">ابدأ الآن</button>
+            </div>
+            <div class="hero-background"></div>
+        </section>
+    </div>
+
+    <div id="materials" class="page">
+        <div class="page-header">
+            <h1>المواد الدراسية</h1>
+            <p>حمّل ملاحظات المحاضرات والنصوص والكتب الدراسية واحفظها في مكتبتك الشخصية.</p>
+        </div>
+
+        <div class="materials-container">
+            <div class="upload-section">
+                <h2>📤 تحميل مستند جديد</h2>
+                <div class="upload-box">
+                    <div class="upload-icon">☁️</div>
+                    <p class="upload-title">اسحب ملفك هنا</p>
+                    <p class="upload-subtitle">يدعم ملفات PDF و TXT حتى 50MB</p>
+                    <select class="select-file" id="uploadSubjectSelect">
+                        <option value="">اختر المادة...</option>
+                    </select>
+                    <select class="select-file" id="uploadFileTypeSelect">
+                        <option value="material">مادة</option>
+                        <option value="exam">امتحان سابق</option>
+                    </select>
+                    <button class="btn-secondary" onclick="document.getElementById('fileInput').click()">استعرض الملفات</button>
+                    <input type="file" id="fileInput" style="display:none;" accept=".pdf,.txt" onchange="handleFileUpload(event)">
+                </div>
+            </div>
+
+            <div class="library-section">
+                <h2>📚 مكتبتك</h2>
+                <div class="files-list" id="filesList">
+                    <div class="file-item">
+                        <span class="file-icon">📄</span>
+                        <div class="file-info">
+                            <div class="file-name">Lec_3.pdf</div>
+                            <div class="file-date">28 مارس 2026 • 8:18 ص</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="chat" class="page">
+        <div class="page-header">
+            <h1>اختبار الـ API</h1>
+            <p>أرسل نصاً إلى نقطة النهاية المدمجة في الخادم وتحقق من الاستجابة.</p>
+        </div>
+        <div class="chat-container" style="padding: 20px; max-width: 800px; margin: 0 auto;">
+            <textarea id="chatInput" rows="6" placeholder="أكتب السؤال أو الطلب هنا..." style="width: 100%; padding: 12px; font-size: 16px; margin-bottom: 12px;"></textarea>
+            <button class="btn-primary" onclick="sendChatTest()">إرسال إلى نموذج HF</button>
+            <pre id="chatResult" style="background: #f5f5f5; color: #222; padding: 16px; margin-top: 16px; border-radius: 8px; white-space: pre-wrap;"></pre>
+        </div>
+    </div>
+
+    <div id="login" class="page">
+        <div class="auth-container">
+            <div class="auth-form">
+                <h1>تسجيل الدخول</h1>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">البريد الإلكتروني</label>
+                        <input type="email" id="loginEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">كلمة المرور</label>
+                        <input type="password" id="loginPassword" required>
+                    </div>
+                    <button type="submit" class="btn-primary">دخول</button>
+                </form>
+                <p>ليس لديك حساب؟ <a href="#signup" onclick="showPage('signup')">إنشاء حساب جديد</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="signup" class="page">
+        <div class="auth-container">
+            <div class="auth-form">
+                <h1>إنشاء حساب جديد</h1>
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label for="signupName">الاسم الكامل</label>
+                        <input type="text" id="signupName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupEmail">البريد الإلكتروني</label>
+                        <input type="email" id="signupEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPassword">كلمة المرور</label>
+                        <input type="password" id="signupPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupConfirmPassword">تأكيد كلمة المرور</label>
+                        <input type="password" id="signupConfirmPassword" required>
+                    </div>
+                    <button type="submit" class="btn-primary">إنشاء الحساب</button>
+                </form>
+                <p>لديك حساب بالفعل؟ <a href="#login" onclick="showPage('login')">تسجيل الدخول</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // Inlined script from script.js with small adjustment to API base if needed
+    const API_BASE = 'http://localhost:3000/api';
+
+    let currentUser = null;
+    let authToken = null;
+
+    function checkAuth() {
+        const token = localStorage.getItem('authToken');
+        const user = localStorage.getItem('currentUser');
+        if (token && user) {
+            authToken = token;
+            currentUser = JSON.parse(user);
+            return true;
+        }
+        return false;
+    }
+
+    function setAuth(token, user) {
+        authToken = token; currentUser = user;
+        localStorage.setItem('authToken', token);
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        updateNavVisibility();
+    }
+
+    function clearAuth() { authToken = null; currentUser = null; localStorage.removeItem('authToken'); localStorage.removeItem('currentUser'); updateNavVisibility(); }
+    function logout() { clearAuth(); showPage('login'); }
+
+    function updateNavVisibility() {
+        const userInfo = document.getElementById('userInfo');
+        const userName = document.getElementById('userName');
+        const loginLink = document.getElementById('loginLink').parentElement;
+        const signupLink = document.getElementById('signupLink').parentElement;
+        if (currentUser) {
+            userInfo.style.display = 'block';
+            userName.textContent = `مرحباً ${currentUser.name}`;
+            loginLink.style.display = 'none'; signupLink.style.display = 'none';
+        } else { userInfo.style.display = 'none'; loginLink.style.display = 'block'; signupLink.style.display = 'block'; }
+    }
+
+    async function authenticatedFetch(url, options = {}) {
+        const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
+        if (authToken) headers['Authorization'] = `Bearer ${authToken}`;
+        const response = await fetch(url, { ...options, headers });
+        if (response.status === 401) { clearAuth(); showPage('login'); throw new Error('انتهت صلاحية الجلسة'); }
+        return response;
+    }
+
+    function showPage(pageName) {
+        const protectedPages = ['dashboard', 'materials'];
+        if (protectedPages.includes(pageName) && !checkAuth()) { showPage('login'); return; }
+        const pages = document.querySelectorAll('.page'); pages.forEach(p => p.classList.remove('active'));
+        const selected = document.getElementById(pageName); if (selected) { selected.classList.add('active'); window.scrollTo(0,0); if (pageName === 'materials') loadFiles(); }
+    }
+
+    function handleFileUpload(event) {
+        const file = event.target.files[0];
+        const subjectSelect = document.getElementById('uploadSubjectSelect');
+        const fileTypeSelect = document.getElementById('uploadFileTypeSelect');
+        const subjectCode = subjectSelect ? subjectSelect.value : '';
+        const fileType = fileTypeSelect ? fileTypeSelect.value : 'material';
+        if (!subjectCode) { alert('يرجى اختيار المادة قبل رفع الملف'); return; }
+        if (file) {
+            const formData = new FormData(); formData.append('file', file); formData.append('subjectCode', subjectCode); formData.append('fileType', fileType);
+            const uploadBtn = document.querySelector('.upload-box button'); const originalText = uploadBtn.textContent; uploadBtn.textContent = 'جاري الرفع...'; uploadBtn.disabled = true;
+            fetch(`${API_BASE}/upload`, { method: 'POST', headers: { 'Authorization': `Bearer ${authToken}` }, body: formData })
+            .then(r => r.json()).then(data => { if (data.error) { alert('خطأ: ' + data.error); } else { alert('✅ تم رفع الملف بنجاح: ' + data.originalName); loadFiles(); } })
+            .catch(err => { console.error('Upload error:', err); alert('فشل في رفع الملف. تأكد من تسجيل الدخول.'); })
+            .finally(() => { uploadBtn.textContent = originalText; uploadBtn.disabled = false; });
+        }
+    }
+
+    async function sendChatTest() {
+        const input = document.getElementById('chatInput').value.trim(); const resultDiv = document.getElementById('chatResult');
+        if (!input) { alert('يرجى إدخال نص للاختبار'); return; }
+        resultDiv.textContent = 'جاري إرسال الطلب...';
+        try {
+            const response = await fetch(`${API_BASE}/chat`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ inputs: input }) });
+            const data = await response.json(); if (!response.ok) { resultDiv.textContent = `خطأ: ${data.error || response.statusText}`; return; }
+            resultDiv.textContent = JSON.stringify(data, null, 2);
+        } catch (error) { console.error('Chat request failed:', error); resultDiv.textContent = 'فشل في الاتصال بالخادم أو نقطة النهاية الخارجية.'; }
+    }
+
+    function loadSubjects() { authenticatedFetch(`${API_BASE}/courses`).then(r => r.json()).then(courses => populateSubjectSelects(courses)).catch(e => console.error('Load subjects error:', e)); }
+    function populateSubjectSelects(courses) { const uploadSubjectSelect = document.getElementById('uploadSubjectSelect'); if (!uploadSubjectSelect) return; const options = ['<option value="">اختر المادة...</option>']; courses.forEach(course => { options.push(`<option value="${course.code}">${course.code} - ${course.name}</option>`); }); uploadSubjectSelect.innerHTML = options.join(''); }
+
+    function loadFiles() { authenticatedFetch(`${API_BASE}/files`).then(r => r.json()).then(files => { const filesList = document.getElementById('filesList'); filesList.innerHTML = ''; if (files.length === 0) { filesList.innerHTML = '<div class="file-item" style="justify-content: center; color: #999;">لا توجد ملفات مرفوعة بعد</div>'; return; } files.forEach(file => { const fileItem = document.createElement('div'); fileItem.className = 'file-item'; const today = new Date(file.uploadDate); const dateStr = today.toLocaleDateString('ar-EG') + ' • ' + today.toLocaleTimeString('ar-EG'); fileItem.innerHTML = `<span class="file-icon">📄</span><div class="file-info"><div class="file-name">${file.name}</div><div class="file-date">${dateStr}</div></div>`; filesList.appendChild(fileItem); }); }).catch(err => { console.error('Load files error:', err); const filesList = document.getElementById('filesList'); filesList.innerHTML = '<div class="file-item" style="justify-content: center; color: #999;">فشل في تحميل الملفات</div>'; }); }
+
+    document.addEventListener('DOMContentLoaded', function() { if (checkAuth()) { showPage('dashboard'); loadSubjects(); } else { showPage('login'); } updateNavVisibility(); const loginForm = document.getElementById('loginForm'); const signupForm = document.getElementById('signupForm'); if (loginForm) loginForm.addEventListener('submit', function(e){ e.preventDefault(); handleLogin(e); }); if (signupForm) signupForm.addEventListener('submit', function(e){ e.preventDefault(); handleSignup(e); }); });
+
+    function handleLogin(event) {
+        const email = document.getElementById('loginEmail').value; const password = document.getElementById('loginPassword').value; if (!email || !password) { alert('يرجى ملء جميع الحقول'); return; }
+        fetch(`${API_BASE}/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }) })
+        .then(r => r.json()).then(data => { if (data.error) { alert('خطأ: ' + data.error); } else { setAuth(data.token, data.user); alert('✅ ' + data.message); showPage('dashboard'); } })
+        .catch(err => { console.error('Login error:', err); alert('فشل في تسجيل الدخول'); });
+    }
+
+    function handleSignup(event) {
+        const name = document.getElementById('signupName').value; const email = document.getElementById('signupEmail').value; const password = document.getElementById('signupPassword').value; const confirmPassword = document.getElementById('signupConfirmPassword').value; if (!name || !email || !password || !confirmPassword) { alert('يرجى ملء جميع الحقول'); return; } if (password !== confirmPassword) { alert('كلمة المرور غير متطابقة'); return; }
+        fetch(`${API_BASE}/register`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, email, password }) })
+        .then(r => r.json()).then(data => { if (data.error) { alert('خطأ: ' + data.error); } else { setAuth(data.token, data.user); alert('✅ ' + data.message); showPage('dashboard'); } })
+        .catch(err => { console.error('Signup error:', err); alert('فشل في إنشاء الحساب'); });
+    }
+    </script>
+</body>
+</html>

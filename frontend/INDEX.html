@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academy - منصة المواد الدراسية</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">🎓</span>
+                <span>Academy</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="#dashboard" class="nav-link" onclick="showPage('dashboard')">لوحة التحكم</a></li>
+                <li class="nav-item"><a href="#materials" class="nav-link" onclick="showPage('materials')">المواد الدراسية</a></li>
+                <li class="nav-item"><a href="#chat" class="nav-link" onclick="showPage('chat')">اختبار الـ API</a></li>
+                <li class="nav-item user-info" id="userInfo" style="display: none;">
+                    <span id="userName"></span>
+                    <button class="btn-secondary" onclick="logout()" style="margin-left: 10px; padding: 5px 10px;">تسجيل خروج</button>
+                </li>
+                <li class="nav-item"><a href="#login" class="nav-link" onclick="showPage('login')" id="loginLink">تسجيل الدخول</a></li>
+                <li class="nav-item"><a href="#signup" class="nav-link" onclick="showPage('signup')" id="signupLink">إنشاء حساب</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Dashboard Page -->
+    <div id="dashboard" class="page active">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-label">منصتك الشخصية للتعليم الذكي</div>
+                <h1 class="hero-title">تعلم أذكى، وليس أصعب</h1>
+                <p class="hero-description">
+                    حمّل موادك الدراسية وادعّم مكتبتك الشخصية بالملفات والملاحظات بسهولة.
+                </p>
+                <button class="btn-primary" onclick="showPage('materials')">ابدأ الآن</button>
+            </div>
+            <div class="hero-background"></div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features">
+            <div class="features-grid">
+                <!-- Upload Materials -->
+                <div class="feature-card">
+                    <div class="feature-icon">📄</div>
+                    <h3>تحميل المواد</h3>
+                    <p>احفظ ملاحظات المحاضرات والكتب النصية في مكان آمن وسهل الوصول.</p>
+                    <a href="#materials" class="explore-link" onclick="showPage('materials')">اكتشف →</a>
+                </div>
+
+
+            </div>
+        </section>
+    </div>
+
+    <!-- Materials Page -->
+    <div id="materials" class="page">
+        <div class="page-header">
+            <h1>المواد الدراسية</h1>
+            <p>حمّل ملاحظات المحاضرات والنصوص والكتب الدراسية واحفظها في مكتبتك الشخصية.</p>
+        </div>
+
+        <div class="materials-container">
+            <!-- Upload Section -->
+            <div class="upload-section">
+                <h2>📤 تحميل مستند جديد</h2>
+                <div class="upload-box">
+                    <div class="upload-icon">☁️</div>
+                    <p class="upload-title">اسحب ملفك هنا</p>
+                    <p class="upload-subtitle">يدعم ملفات PDF و TXT حتى 50MB</p>
+                    <select class="select-file" id="uploadSubjectSelect">
+                        <option value="">اختر المادة...</option>
+                    </select>
+                    <select class="select-file" id="uploadFileTypeSelect">
+                        <option value="material">مادة</option>
+                        <option value="exam">امتحان سابق</option>
+                    </select>
+                    <button class="btn-secondary" onclick="document.getElementById('fileInput').click()">استعرض الملفات</button>
+                    <input type="file" id="fileInput" style="display:none;" accept=".pdf,.txt" onchange="handleFileUpload(event)">
+                </div>
+            </div>
+
+            <!-- Library Section -->
+            <div class="library-section">
+                <h2>📚 مكتبتك</h2>
+                <div class="files-list" id="filesList">
+                    <div class="file-item">
+                        <span class="file-icon">📄</span>
+                        <div class="file-info">
+                            <div class="file-name">Lec_3.pdf</div>
+                            <div class="file-date">28 مارس 2026 • 8:18 ص</div>
+                        </div>
+                    </div>
+                    <div class="file-item">
+                        <span class="file-icon">📄</span>
+                        <div class="file-info">
+                            <div class="file-name">Lec_2.pdf</div>
+                            <div class="file-date">28 مارس 2026 • 7:48 ص</div>
+                        </div>
+                    </div>
+                    <div class="file-item">
+                        <span class="file-icon">📄</span>
+                        <div class="file-info">
+                            <div class="file-name">test.txt</div>
+                            <div class="file-date">28 مارس 2026 • 7:34 ص</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Test Page -->
+    <div id="chat" class="page">
+        <div class="page-header">
+            <h1>اختبار الـ API</h1>
+            <p>أرسل نصاً إلى نقطة النهاية المدمجة في الخادم وتحقق من الاستجابة.</p>
+        </div>
+        <div class="chat-container" style="padding: 20px; max-width: 800px; margin: 0 auto;">
+            <textarea id="chatInput" rows="6" placeholder="أكتب السؤال أو الطلب هنا..." style="width: 100%; padding: 12px; font-size: 16px; margin-bottom: 12px;"></textarea>
+            <button class="btn-primary" onclick="sendChatTest()">إرسال إلى نموذج HF</button>
+            <pre id="chatResult" style="background: #f5f5f5; color: #222; padding: 16px; margin-top: 16px; border-radius: 8px; white-space: pre-wrap;"></pre>
+        </div>
+    </div>
+
+    <!-- Login Page -->
+    <div id="login" class="page">
+        <div class="auth-container">
+            <div class="auth-form">
+                <h1>تسجيل الدخول</h1>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">البريد الإلكتروني</label>
+                        <input type="email" id="loginEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">كلمة المرور</label>
+                        <input type="password" id="loginPassword" required>
+                    </div>
+                    <button type="submit" class="btn-primary">دخول</button>
+                </form>
+                <p>ليس لديك حساب؟ <a href="#signup" onclick="showPage('signup')">إنشاء حساب جديد</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Page -->
+    <div id="signup" class="page">
+        <div class="auth-container">
+            <div class="auth-form">
+                <h1>إنشاء حساب جديد</h1>
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label for="signupName">الاسم الكامل</label>
+                        <input type="text" id="signupName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupEmail">البريد الإلكتروني</label>
+                        <input type="email" id="signupEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPassword">كلمة المرور</label>
+                        <input type="password" id="signupPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupConfirmPassword">تأكيد كلمة المرور</label>
+                        <input type="password" id="signupConfirmPassword" required>
+                    </div>
+                    <button type="submit" class="btn-primary">إنشاء الحساب</button>
+                </form>
+                <p>لديك حساب بالفعل؟ <a href="#login" onclick="showPage('login')">تسجيل الدخول</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
